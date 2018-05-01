@@ -17,15 +17,23 @@ const {
 
 
 async function main(){
+  console.log('compling ./MultiSigGnosis.sol ...');
   const output = solc.compile(multisigSrc, 1);
+  console.log('compiled successfully ./MultiSigGnosis.sol');
   const abi = JSON.parse(output.contracts[':MultiSigWallet'].interface);
   const bytecode = '0x' + output.contracts[':MultiSigWallet'].bytecode;
 
   const nonce = await web3.eth.getTransactionCount(DEPLOYMENT_ACCOUNT_ADDRESS);
+  const owners = [OWNER_1, OWNER_2, OWNER_3]
   const deployed = await deployContract({
-    nonce, web3, abi, bytecode, args: [[OWNER_1, OWNER_2, OWNER_3], REQUIRED]
+    nonce, web3, abi, bytecode, args: 
+    [owners, REQUIRED]
   })
-  console.log(deployed.options.address)
+  console.log(`Deployed Multisig: ${deployed.options.address}
+   
+   Owners: ${owners}
+   Required Signatures: ${REQUIRED}
+   `)
 
 }
 main()

@@ -39,6 +39,7 @@ async function deployContract({
     data: rawBytecode,
     nonce: Web3Utils.toHex(nonce),
     to: null,
+    gas,
     privateKey: privateKey || deploymentPrivateKey,
     url: url || RPC_URL,
     gasPrice: gasPrice || GAS_PRICE
@@ -52,11 +53,11 @@ async function deployContract({
 }
 
 
-async function sendRawTx({data, nonce, to, privateKey, url, gasPrice}) {
+async function sendRawTx({data,gas, nonce, to, privateKey, url, gasPrice}) {
   var rawTx = {
     nonce,
     gasPrice: Web3Utils.toHex(gasPrice),
-    gasLimit:  Web3Utils.toHex('6700000'),
+    gasLimit:  Web3Utils.toHex(gas),
     to,
     data
   }
@@ -93,7 +94,7 @@ function timeout(ms) {
 let count = 0;
 async function getReceipt(txHash, url) {
   count += Number(GET_RECEIPT_INTERVAL_IN_MILLISECONDS)/1000
-  console.log(count);
+  console.log(`pending ${count} seconds...`);
   await timeout(GET_RECEIPT_INTERVAL_IN_MILLISECONDS);
   let receipt = await sendNodeRequest(url, "eth_getTransactionReceipt", txHash);
   if(receipt === null) {

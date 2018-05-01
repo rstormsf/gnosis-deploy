@@ -1,5 +1,5 @@
 {
-  "name": "MultiSigDeploy",
+  "name": "gnosis-deploy",
   "version": "1.0.0",
   "description": "Deploy Gnosis multisig via cli",
   "main": "index.js",
